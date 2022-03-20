@@ -1,0 +1,106 @@
+.status {
+  height: 8px;
+  width: 8px;
+  border-radius: 10px;
+  background: lightgrey;
+}
+
+.statusActive {
+  background: green;
+}
+
+.unCompletedTrips {
+  font-weight: 700;
+}
+
+.passedTrip {
+  font-weight: unset;
+  color: lightgrey;
+}
+
+.cancelledTrip {
+  font-weight: unset;
+  text-decoration: line-through;
+  color: #ff336670;
+}
+
+.statusInRoute {
+  background: yellow;
+}
+
+.statusInTrans {
+  background: orange;
+}
+
+.statusWating {
+  background: blue;
+}
+
+.timeLineContainer {
+  position: unset;
+  left: unset;
+  right: unset;
+
+  :global(.ant-timeline-item-label) {
+    width: 66px !important;
+    text-align: left !important;
+  }
+
+  :global(.ant-timeline-item-tail) {
+    left: 58px !important;
+  }
+
+  :global(.ant-timeline-item-head) {
+    left: 58px !important;
+  }
+
+  :global(.ant-timeline-item-content) {
+    left: 0 !important;
+    margin: 0 !important;
+    padding-left: 58px;
+    width: 100% !important;
+  }
+}
+
+.itemContainer {
+  position: relative;
+  margin-left: 15px;
+  cursor: pointer;
+
+  .innerItemWrapper {
+    padding: 8px 6px 8px 21px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    // cursor: pointer;
+
+    .statusAction {
+      position: absolute;
+      right: 8px;
+      top: 26px;
+      font-weight: 700;
+      color: lightgray;
+
+      .iconWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        height: 26px;
+        width: 26px;
+        border: 1px solid lightgray;
+        font-size: 0.7em;
+        color: #1890ff;
+      }
+    }
+  }
+}
+
+.innerItemWrapper:hover {
+  border: 1px solid lightgray;
+  padding: 7px 5px 7px 20px;
+}
+
+:global(.ant-timeline-item-content) {
+  margin-left: 15px;
+}
