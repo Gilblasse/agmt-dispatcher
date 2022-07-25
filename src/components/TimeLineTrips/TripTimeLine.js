@@ -1,49 +1,48 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { Timeline } from 'antd';
+import { map, groupBy, entries } from 'lodash';
 import TimeLineItemTrip from './TimeLineItemTrip';
-import { ClockCircleOutlined } from '@ant-design/icons';
 import styles from './styles.module.scss';
+import HoverSelected from './HoverSelected';
+import tripsData from '../../constants/TimeLineTrips/defaults';
 
 function TripTimeLine() {
+  const [selectedTrip, setSelectedTrip] = useState({})
+  const [trips, setTrips] = useState({})
+
+  useEffect(()=>{
+    const sortedTrips = tripsData.sort((a,b) => a.time.localeCompare(b.time))
+    const groupTrips = groupBy(sortedTrips, trip => moment(trip.time,'LT').hour())
+
+    setTrips(groupTrips)
+  },[tripsData])
+
 
   return (
-      <Timeline mode="left" pending pendingDot={()=> null} className={styles.timeLineContainer}>
-
-        <Timeline.Item label="08:00">
-          <TimeLineItemTrip
-            time="08:25"
-            name="Kevin Garner"
-            status="completed"
-            isPassed
-          />
-          <TimeLineItemTrip
-            time="08:15"
-            name="Marie Kennedy"
-            status="inRoute"
-          />
-          <TimeLineItemTrip time="08:25" name="Kevin Garner" status="inTrans" />
-          <TimeLineItemTrip time="08:25" name="Ben Gray" status="wating" />
-        </Timeline.Item>
-
-
-        <Timeline.Item label="09:00">
-            <TimeLineItemTrip time="09:15" name="Marie Kennedy" />
-            <TimeLineItemTrip time="09:25" name="Kevin Garner" />
-        </Timeline.Item>
-
-
-        <Timeline.Item label="10:00">
-            <TimeLineItemTrip
-              time="10:25"
-              name="Kevin Garner"
-              status="canceled"
-              isPassed
-            />
-            <TimeLineItemTrip time="10:15" name="Marie Kennedy" />
-            <TimeLineItemTrip time="10:25" name="Kevin Garner" />
-        </Timeline.Item>
-
-      </Timeline>
+      <div className={styles.tripTimeLineWrapper}>
+        <HoverSelected selectedTrip={selectedTrip} />
+        <Timeline mode="left" pending pendingDot={()=> null} className={styles.timeLineContainer}>
+          {
+            map(entries(trips), ([hour,hourTrips]) => {
+              return (
+              <Timeline.Item label={`${hour}:00`} key={hour}>
+                {
+                  map(hourTrips, (trip,i) => (
+                    <TimeLineItemTrip
+                      key={i}
+                      {...trip}
+                      setSelectedTrip={setSelectedTrip}
+                    />
+                  ))
+                }
+              </Timeline.Item>
+              )
+            })
+          }
+        </Timeline>
+      </div>
   );
 }
 
